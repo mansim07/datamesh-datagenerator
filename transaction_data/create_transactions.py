@@ -31,6 +31,7 @@ import os
 import glob
 from csv import reader
 import time
+from google.cloud import storage
 
 
 class Transactions:
@@ -129,11 +130,11 @@ def validat_parse_input():
     except:
         print_err(5)
 
-    return  num_trans_per_customer, seed_num, cc_customer_file, merchant_file_name, transactions_output_filename, start_date, end_date,  project_id, bucket_name
+    return  num_trans_per_customer, seed_num, cc_customer_file, customer_file, merchant_file_name, transactions_output_filename, start_date, end_date,  project_id, bucket_name
 
 if __name__ == '__main__':
     #create transaction and transaction history
-    num_trans_per_customer, seed_num, cc_customer_file, merchant_file_name, transactions_output_filename, start_date, end_date,  project_id, bucket_name = validat_parse_input()
+    num_trans_per_customer, seed_num, cc_customer_file, customer_file, merchant_file_name, transactions_output_filename, start_date, end_date,  project_id, bucket_name = validat_parse_input()
 
 
     #merchant_source_filename=sys.argv[1]    #"./data/merchant.csv"
@@ -149,23 +150,30 @@ if __name__ == '__main__':
     Faker.seed(10)
     #Create a sample terminal_id to cc_token mapping based on location
     #can be done in Spark 
+    today_date = datetime.today().strftime('%Y-%m-%d')
+    ts = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
 
+    client = storage.Client(project=project_id)
+    bucket = client.get_bucket(bucket_name)
+    transaction_file = "auth_transactions_data/date=" + today_date + "/auth_" + str(ts) + ".csv" 
+    transaction_blob = bucket.blob(transaction_file)
+  
     terminal_list=[]
-    with open("/Users/maharanam/OpenSourceCode/datamesh-datagenerator/merchant_data/data/merchant.csv", 'r') as read_obj:
+    with open(merchant_file_name, 'r') as read_obj:
         csv_reader = reader(read_obj,delimiter='|')
         header = next(csv_reader)
 
         for row in csv_reader:
             terminal_list.append(eval(row[13])[0])
 
-    with open("/Users/maharanam/OpenSourceCode/datamesh-datagenerator/customer_data/data/cc_customer.csv", 'r') as read_obj:
+    with open(cc_customer_file, 'r') as read_obj:
         csv_reader = reader(read_obj,delimiter='|')
         header = next(csv_reader)
         # Check file as empty
         if header != None:
             # Iterate over each row after the header in the csv
             count=0
-            with open("/Users/maharanam/OpenSourceCode/datamesh-datagenerator/transaction_data/data/trans_data.csv", 'w', newline='') as transactionfile:
+            with open(transactions_output_filename, 'w', newline='') as transactionfile:
                 transactions_fieldnames = ['cc_token','card_read_type', 'trans_ts', 'trans_type', 'trans_amount',
                                'trans_currency',  'trans_auth_code', 'trans_auth_date', 'payment_method', 'origination','is_pin_entry', 'is_signed','is_unattended','swipe_type', 'terminal_id','event_ids','event']
 
@@ -206,7 +214,7 @@ if __name__ == '__main__':
                         )
 
                     #if count == num_trans_per_customer: 
-                   #     break
-
+                     #   break
+    transaction_blob.upload_from_filename(transactions_output_filename)
 
 
