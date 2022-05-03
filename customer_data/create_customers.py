@@ -15,9 +15,10 @@ import demographics
 from main_config import MainConfig
 from datetime import timezone, datetime
 import csv
-from faker_credit_score import CreditScore
+#from faker_credit_score import CreditScore
 import os
 import glob
+import hashlib
 
 from google.cloud import storage
 
@@ -72,6 +73,8 @@ class Customer:
             start="-10y", end="+10y", date_format="%m/%y")
         self.cc_ccv = fake.credit_card_security_code()
         self.cc_cardtype = self.get_card_type()
+        token_str= hashlib.sha256((self.cc + self.cc_expiry + 'E1F53135E559C253').encode())
+        self.token=token_str.hexdigest() #token=SHA256(PAN|EXP_DATE|SSS)
 
         # Fico Score
         # Generate as seperate job
@@ -233,7 +236,7 @@ def validate():
 if __name__ == '__main__':
     # read and validate stdin
     num_cust, seed_num, main, project_id, bucket_name = validate()
-    ts = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
+    
 
     # from demographics module
     cities = demographics.make_cities()
@@ -241,7 +244,7 @@ if __name__ == '__main__':
 
     fake = Faker()
     Faker.seed(seed_num)
-    fake.add_provider(CreditScore)
+    #fake.add_provider(CreditScore)
 
     #headers = Headers()
 
@@ -249,11 +252,12 @@ if __name__ == '__main__':
     all_profiles = MainConfig(main).config
 
     today_date = datetime.today().strftime('%Y-%m-%d')
+    ts = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
 
     client = storage.Client(project=project_id)
     bucket = client.get_bucket(bucket_name)
-    customer_file = "customer_identifiers/" + today_date + "/customer_" + str(ts) + ".csv"
-    cc_customer_file= "customer_cc_identifiers/" + today_date + "/cc_customer_" + str(ts) + ".csv"
+    customer_file = "customers_data/date=" + today_date + "/customer_" + str(ts) + ".csv"
+    cc_customer_file= "cc_customers_data/date=" + today_date + "/cc_customer_" + str(ts) + ".csv"
     customer_blob = bucket.blob(customer_file)
     cc_customer_blob = bucket.blob(cc_customer_file)
     customer_source_filename="./data/customer.csv"
@@ -266,6 +270,13 @@ if __name__ == '__main__':
             customerfile, delimiter='|', lineterminator='\n', fieldnames=customer_fieldnames)
 
         customer_writer.writeheader()
+
+        cc_customer_fieldnames = [
+                'cc_number', 'cc_expiry', 'cc_ccv', 'cc_card_type', 'client_id','token']
+        cc_customer_writer = csv.DictWriter(
+                cc_custfile, delimiter='|', lineterminator='\n', fieldnames=cc_customer_fieldnames)
+
+        cc_customer_writer.writeheader()
         for _ in range(num_cust):
             new_data = Customer()
             customer_writer.writerow({
@@ -289,12 +300,7 @@ if __name__ == '__main__':
             }
             )
 
-            cc_customer_fieldnames = [
-                'cc_number', 'cc_expiry', 'cc_ccv', 'cc_card_type', 'client_id']
-            cc_customer_writer = csv.DictWriter(
-                cc_custfile, delimiter='|', lineterminator='\n', fieldnames=cc_customer_fieldnames)
 
-            cc_customer_writer.writeheader()
 
             cc_customer_writer.writerow({
                 'cc_number': new_data.cc,
@@ -302,13 +308,14 @@ if __name__ == '__main__':
                 'cc_ccv': new_data.cc_ccv,
                 'cc_card_type': new_data.cc_cardtype,
                 'client_id': new_data.client_id,
+                'token': new_data.token
 
             }
             )
     customer_blob.upload_from_filename(customer_source_filename)
     cc_customer_blob.upload_from_filename(cc_customer_source_filename)
 
-    files = glob.glob('./data/*')
-    for f in files:
-        os.remove(f)
+    #files = glob.glob('./data/*')
+    #for f in files:
+    #    os.remove(f)
 

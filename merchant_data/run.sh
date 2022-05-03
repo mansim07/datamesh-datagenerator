@@ -1,0 +1,1 @@
+python3 create_merchants.py 10000 10 /Users/maharanam/OpenSourceCode/datamesh-datagenerator/merchant_data/data/merchant.csv /Users/maharanam/OpenSourceCode/datamesh-datagenerator/merchant_data/data/mcc_codes.csv bankofmars-retail-merchants bankofmars_retail_merchants_data
