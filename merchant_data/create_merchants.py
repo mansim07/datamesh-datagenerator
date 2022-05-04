@@ -46,14 +46,18 @@ class Merchant:
         self.email = fake.email(domain=self.domain_str.lower() + "." +random.choice(self.domain_type))
         self.street_address= fake.street_address()
         latlng=fake.local_latlng(country_code='US')
-        self.city=latlng[2]
-        self.state=latlng[4].split("/")[1]
+        self.city='' #latlng[2]
+        self.state='' #latlng[4].split("/")[1]
         self.country=latlng[3]
-        self.latitude=latlng[0]
-        self.longitude=latlng[1]
+        location=self.get_random_location()
+        self.latitude=fake.coordinate(center=location.split('|')[3] , radius=0.1) #latlng[0]
+        self.longitude=fake.coordinate(location.split('|')[4],radius=0.1)  #latlng[1]
         self.owner_id=fake.pystr(min_chars=10,max_chars=10)
         self.owner_name=fake.name()
         self.terminal_ids="tid-" +fake.pystr_format() #,"tid-" +fake.pystr_format(),"tid-" +fake.pystr_format() 
+    
+    def get_random_location(self):
+        return cities[min(cities, key=lambda x: abs(x - random.random()))]
 
     def get_merchant_name(self,row):
         if row[5] == 'Y':
@@ -110,7 +114,18 @@ def validat_parse_input():
 
 if __name__ == '__main__':
 
+
     num_merchants, seed_num, merchant_output_filename, merchant_mcc_codes,  project_id, bucket_name = validat_parse_input()
+
+    cities = {}
+    f = open('/Users/maharanam/OpenSourceCode/datamesh-datagenerator/customer_data/demographic_data/locations_partitions.csv', 'r').readlines()
+    for line in f:
+        try:
+            cdf, output = line.replace('\n', '').split(',')
+            cities[float(cdf)] = output
+        # header
+        except:
+            pass
 
 
     #merchant_source_filename=sys.argv[1]    #"./data/merchant.csv"

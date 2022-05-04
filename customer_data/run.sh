@@ -1,1 +1,1 @@
-python3 create_customers.py 1000 430 ../profiles/main_config.json bankofmars-retail-customers bankofmars_retail_customers_source_data
+python3 create_customers_cc.py 1000 430 ../profiles/main_config.json bankofmars-retail-customers bankofmars_retail_customers_source_data
