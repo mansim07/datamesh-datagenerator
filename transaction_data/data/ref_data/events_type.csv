@@ -1,4 +1,4 @@
-ID|Event_Code|Descriptopm|has_timestamp|has_value
+ID|Event_Code|Descripton|has_timestamp|has_value
 1|crs|Card read started|T|F
 2|cr|Card read|T|F
 3|cp|CDCVM performed|F|F

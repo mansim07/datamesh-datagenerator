@@ -53,7 +53,7 @@ class Merchant:
         self.longitude=latlng[1]
         self.owner_id=fake.pystr(min_chars=10,max_chars=10)
         self.owner_name=fake.name()
-        self.terminal_ids="tid-" +fake.pystr_format(),"tid-" +fake.pystr_format(),"tid-" +fake.pystr_format() 
+        self.terminal_ids="tid-" +fake.pystr_format() #,"tid-" +fake.pystr_format(),"tid-" +fake.pystr_format() 
 
     def get_merchant_name(self,row):
         if row[5] == 'Y':
