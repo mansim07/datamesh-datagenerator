@@ -23,19 +23,18 @@ from csv import reader
 import time
 from google.cloud import storage
 
-
-
 project_id= sys.argv[1]
 bucket_name= sys.argv[2]
+trans_ref_data=sys.argv[3]
 
 client = storage.Client(project=project_id)
 bucket = client.get_bucket(bucket_name)
 #transaction_blob = bucket.blob("ref_data/")0
 
-files=os.listdir('./data/ref_data')
+files=os.listdir(trans_ref_data)
 print(files)
 for f in files:
-    print("./data/ref_data/{0}".format(f))
+    print(trans_ref_data +"/{0}".format(f))
 
 
 def upload_pyspark_file(filename, file):
@@ -49,5 +48,5 @@ def upload_pyspark_file(filename, file):
     blob.upload_from_filename(file)
 
 for f in files: 
-    upload_pyspark_file(f, "./data/ref_data/{0}".format(f))
+    upload_pyspark_file(f, trans_ref_data +"/{0}".format(f))
 

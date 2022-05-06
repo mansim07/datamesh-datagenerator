@@ -31,7 +31,7 @@ class Transactions:
         self.card_read_type=5
         date_time= fake.date_time_between(start_date=start_date_obj,end_date=end_date_obj) #fake.date_time_between(start_date='-3d',end_date='now')
         self.trans_start_ts=time.mktime(date_time.timetuple())
-        rand_secs=random.choice([1,2,3,4,5,6,7,8,9,10])
+        rand_secs=random.choice([7,8,9,10])
         end_time=date_time + timedelta(seconds=rand_secs)
         self.trans_end_ts=time.mktime(end_time.timetuple())
 
@@ -79,7 +79,7 @@ def validat_parse_input():
         elif n == 8:
             print('Error: invalid bucket name')
         elif n == 9:
-            print('Error: invalud GCS file name')
+            print('Error: invalid GCS file name')
 
 
         output = '\nENTER:\n (1) Number of transactions per customer\n '
@@ -162,27 +162,27 @@ if __name__ == '__main__':
         for row in csv_reader:
             terminal_list.append(eval(row[13])[0])
     '''
-    with open(cc_merchant_file, 'r') as read_obj:
-        csv_reader = reader(read_obj,delimiter='|')
-        header = next(csv_reader)
-        # Check file as empty
-        if header != None:
-            # Iterate over each row after the header in the csv
-            count=0
-            with open(transactions_output_filename, 'w', newline='') as transactionfile:
-                transactions_fieldnames = ['cc_token','card_read_type', 'trans_start_ts','trans_end_ts', 'trans_type', 'trans_amount',
-                               'trans_currency',  'trans_auth_code', 'trans_auth_date', 'payment_method', 'origination','is_pin_entry', 'is_signed','is_unattended','swipe_type', 'merchant_id','event_ids','event']
+    for _ in range(num_trans_per_customer):
+        with open(cc_merchant_file, 'r') as read_obj:
+            csv_reader = reader(read_obj,delimiter='|')
+            header = next(csv_reader)
+            # Check file as empty
+            if header != None:
+                # Iterate over each row after the header in the csv
+                count=0
+                with open(transactions_output_filename, 'w', newline='') as transactionfile:
+                    transactions_fieldnames = ['cc_token','card_read_type', 'trans_start_ts','trans_end_ts', 'trans_type', 'trans_amount',
+                                'trans_currency',  'trans_auth_code', 'trans_auth_date', 'payment_method', 'origination','is_pin_entry', 'is_signed','is_unattended','swipe_type', 'merchant_id','event_ids','event']
 
-                transaction_writer = csv.DictWriter(
-                transactionfile, delimiter=';', lineterminator='\n', fieldnames=transactions_fieldnames,  quotechar='"', doublequote=True)
+                    transaction_writer = csv.DictWriter(
+                    transactionfile, delimiter=';', lineterminator='\n', fieldnames=transactions_fieldnames,  quotechar='"', doublequote=True)
 
-                transaction_writer.writeheader()
+                    transaction_writer.writeheader()
 
-                for row in csv_reader:
-                    # row variable is a list that represents a row in csv
-                    count=count+1 
-                    for _ in range(num_trans_per_customer):
-
+                    for row in csv_reader:
+                        # row variable is a list that represents a row in csv
+                        count=count+1 
+                        
                         new_data = Transactions(row,count,start_date_obj,end_date_obj)
                         transaction_writer.writerow({
                             'cc_token': new_data.cc_token,
@@ -207,11 +207,11 @@ if __name__ == '__main__':
 
 
 
-                        }
-                        )
+                            }
+                            )
 
-                    #if count == num_trans_per_customer: 
-                     #   break
+                        #if count == num_trans_per_customer: 
+                        #   break
     print("Uploading Transaction Data to GCS")
     transaction_blob.upload_from_filename(transactions_output_filename)
 

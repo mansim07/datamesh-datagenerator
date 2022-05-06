@@ -59,8 +59,8 @@ class Customer:
         # Generate as seperate job
         # Merchant ids and locations
         self.merchant_info=[(fake.pystr(min_chars=14,max_chars=14),str(fake.coordinate(center=self.get_random_location().split('|')[3] , radius=0.1)),str(fake.coordinate(center=self.get_random_location().split('|')[4] , radius=0.1))),
-        (fake.pystr(min_chars=14,max_chars=14),str(fake.coordinate(center=self.get_random_location().split('|')[3] , radius=0.3)),str(fake.coordinate(center=self.get_random_location().split('|')[4] , radius=0.1))),
-        (fake.pystr(min_chars=14,max_chars=14),str(fake.coordinate(center=self.get_random_location().split('|')[3] , radius=0.3)),str(fake.coordinate(center=self.get_random_location().split('|')[4] , radius=0.3))
+        (fake.pystr(min_chars=14,max_chars=14),str(fake.coordinate(center=self.get_random_location().split('|')[3] , radius=0.3)),str(fake.coordinate(center=self.get_random_location().split('|')[4] , radius=0.4))),
+        (fake.pystr(min_chars=14,max_chars=14),str(fake.coordinate(center=self.get_random_location().split('|')[3] , radius=0.5)),str(fake.coordinate(center=self.get_random_location().split('|')[4] , radius=0.5))
         )]
 
 
