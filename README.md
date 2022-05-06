@@ -12,6 +12,7 @@ This module generates the below data, uploads it to GCS bucket and loads into a 
 Apart from generating master data, the repo has a list of reference data that will be uploaded to GCS and loaded to BQ tables as well 
 1. Merchant MCC codes 
 2. Credit card reference data: 
+
     2.1. Card read type
 
     2.2  Card type facts
@@ -29,7 +30,7 @@ Apart from generating master data, the repo has a list of reference data that wi
     2.8. Swiped code
 
     2.9. Trans type
-    
+
 
 Step1: Clone this repo 
 
