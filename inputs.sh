@@ -2,25 +2,16 @@
 date_partition=2020-10-10
 local_data_dir="/tmp/data/"
 
-#Must Replace
+#Customer Inputs
 customer_project="bankofmars-retail-customers"
 customer_bucket="bankofmars_retail_customers_source_data"
 customer_bq_table="customers_source_data.customer_demographics"
 cc_customer_map_bq_table="customers_source_data.cc_customer_data"
-
-merchant_project="bankofmars-retail-merchants"
-merchant_bucket="bankofmars_retail_merchants_data"
-credit_card_project="bankofmars-retail-credit-cards"
-credit_card_bucket="bankofmars_retail_credit_cards_trasactions_data"
-cc_ref_bq_dataset="lookup_data"
-
-#Customer Inputs
 customer_seed=1
 num_of_customers=10
 profile_name="./profiles/main_config.json"
 customer_hive_parent="customers_data"
 cc_customer_parent="cc_customers_data"
-
 customer_file=customer.csv
 cc_customer_file=cc_customer.csv
 cc_merchant_file=cc_merchant_info_for_trans.csv
@@ -28,6 +19,8 @@ customer_gcs_file="${customer_hive_parent}/dt=${date_partition}/${customer_file}
 cc_customer_map_gcs_file="${cc_customer_parent}/dt=${date_partition}/${cc_customer_file}"
 
 #Merchant Inputs
+merchant_project="bankofmars-retail-merchants"
+merchant_bucket="bankofmars_retail_merchants_data"
 merchant_seed=1
 num_merchants=1000
 cc_merchant_data="merchants_data"
@@ -42,6 +35,9 @@ mcc_bq_table="merchants_reference_data.mcc_code"
 
 
 #Credit Card Transactions Inputs
+credit_card_project="bankofmars-retail-credit-cards"
+credit_card_bucket="bankofmars_retail_credit_cards_trasactions_data"
+cc_ref_bq_dataset="lookup_data"
 cc_hive_parent="auth_data"
 num_of_trans_per_cust=3
 cc_trans_seed=1
