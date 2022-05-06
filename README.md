@@ -13,14 +13,23 @@ Apart from generating master data, the repo has a list of reference data that wi
 1. Merchant MCC codes 
 2. Credit card reference data: 
     2.1. Card read type
+
     2.2  Card type facts
+
     2.3  Currency 
+
     2.4. Event types
+
     2.5. Origination Code
+
     2.6. Payment methods
+
     2.7. Signature 
+
     2.8. Swiped code
+
     2.9. Trans type
+    
 
 Step1: Clone this repo 
 
@@ -112,3 +121,4 @@ Execution should follow a sequence. The customer data generation process generat
 ## TODOs:
 1. Generate credit card events data e.g. https://jis-eurasipjournals.springeropen.com/articles/10.1186/s13635-018-0076-9/figures/4
 2. Add fraud indicator and add a module to generate cc to mapping data to generate fraudulent transactions
+3. Other data - terminal_ids
