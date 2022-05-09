@@ -5,10 +5,10 @@ local_data_dir="/tmp/data/"
 #Customer Inputs
 customer_project="bankofmars-retail-customers"
 customer_bucket="bankofmars_retail_customers_source_data"
-customer_bq_table="customers_source_data.customer_demographics"
-cc_customer_map_bq_table="customers_source_data.cc_customer_data"
-customer_seed=1
-num_of_customers=10
+customer_bq_table="raw_customer_first_party.customer_demographics"
+cc_customer_map_bq_table="raw_customer_first_party.cc_customer_data"
+customer_seed=10
+num_of_customers=2000
 profile_name="./profiles/main_config.json"
 customer_hive_parent="customers_data"
 cc_customer_parent="cc_customers_data"
@@ -21,7 +21,7 @@ cc_customer_map_gcs_file="${cc_customer_parent}/dt=${date_partition}/${cc_custom
 #Merchant Inputs
 merchant_project="bankofmars-retail-merchants"
 merchant_bucket="bankofmars_retail_merchants_data"
-merchant_seed=1
+merchant_seed=20
 num_merchants=1000
 cc_merchant_data="merchants_data"
 ref_data_local_path="./merchant_data/data/ref_data"
@@ -40,10 +40,10 @@ credit_card_bucket="bankofmars_retail_credit_cards_trasactions_data"
 cc_ref_bq_dataset="lookup_data"
 cc_hive_parent="auth_data"
 num_of_trans_per_cust=3
-cc_trans_seed=1
+cc_trans_seed=30
 trans_filename=trans_data.csv
 cc_auth_gcs_path="${cc_hive_parent}/date=${date_partition}/${trans_filename}"
-start_date=2022-01-01
-end_date=2022-01-02
+start_date=2020-10-01
+end_date=2022-10-10
 trans_ref_data="./transaction_data/data/ref_data"
 auth_bq_table="source_data.auth_table"

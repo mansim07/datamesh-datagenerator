@@ -19,7 +19,7 @@ echo "gs://${customer_bucket}/${customer_gcs_file}"
 
 bq load \
 --project_id=${customer_project} \
---noreplace \
+--replace \
 --autodetect \
 --source_format=CSV \
 --field_delimiter="|" \
@@ -30,7 +30,7 @@ ${customer_bq_table} gs://${customer_bucket}/${customer_gcs_file}
 
 bq load \
 --project_id=${customer_project} \
---noreplace \
+--replace \
 --autodetect \
 --source_format=CSV \
 --field_delimiter="|" \

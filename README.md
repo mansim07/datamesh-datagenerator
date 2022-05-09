@@ -121,5 +121,10 @@ Execution should follow a sequence. The customer data generation process generat
 
 ## TODOs:
 1. Generate credit card events data e.g. https://jis-eurasipjournals.springeropen.com/articles/10.1186/s13635-018-0076-9/figures/4
+
 2. Add fraud indicator and add a module to generate cc to mapping data to generate fraudulent transactions
+
 3. Other data - terminal_ids
+
+4. Create a PySpark version of code for generating big data and running it using Spark serverless 
+
