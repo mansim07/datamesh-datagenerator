@@ -44,7 +44,7 @@ def upload_pyspark_file(filename, file):
     # client = storage.Client(project=project_id)
     # bucket = client.get_bucket(bucket_name)
     print('Uploading from ', file, 'to', filename)
-    blob = bucket.blob("ref_data/" + filename)
+    blob = bucket.blob("ref_data/" + filename.split(".")[0] + "/" + filename)
     blob.upload_from_filename(file)
 
 for f in files: 
