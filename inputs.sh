@@ -31,7 +31,7 @@ merchant_gcs_filename="${cc_merchant_data}/date=${date_partition}/${merchant_fil
 mcc_gcs_filename="mcc_codes/date=${date_partition}/${mcc_file_name}"
 #make sure "cc_merchant_file" is set
 merchant_bq_table="raw_data.core_merchants"
-mcc_bq_table="reference_data.mcc_code"
+mcc_bq_table="merchants_reference_data.mcc_code"
 
 
 #Credit Card Transactions Inputs
@@ -46,4 +46,4 @@ cc_auth_gcs_path="${cc_hive_parent}/date=${date_partition}/${trans_filename}"
 start_date=2020-10-01
 end_date=2022-10-10
 trans_ref_data="./transaction_data/data/ref_data"
-auth_bq_table="raw_data.auth_table"
+auth_bq_table="source_data.auth_table"

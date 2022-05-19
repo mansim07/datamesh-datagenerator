@@ -32,7 +32,7 @@ bq load \
 --replace \
 --autodetect \
 --source_format=CSV \
---field_delimiter="," \
+--field_delimiter="|" \
 --skip_leading_rows=1 \
 --allow_quoted_newlines \
 --allow_jagged_rows \

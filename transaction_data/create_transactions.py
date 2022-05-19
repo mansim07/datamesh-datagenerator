@@ -175,7 +175,7 @@ if __name__ == '__main__':
                                 'trans_currency',  'trans_auth_code', 'trans_auth_date', 'payment_method', 'origination','is_pin_entry', 'is_signed','is_unattended','swipe_type', 'merchant_id','event_ids','event']
 
                     transaction_writer = csv.DictWriter(
-                    transactionfile, delimiter=';', lineterminator='\n', fieldnames=transactions_fieldnames,  quotechar='"', doublequote=True)
+                    transactionfile, delimiter='|', lineterminator='\n', fieldnames=transactions_fieldnames,  quotechar='"', doublequote=True)
 
                     transaction_writer.writeheader()
 

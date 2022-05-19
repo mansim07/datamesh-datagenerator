@@ -153,7 +153,7 @@ if __name__ == '__main__':
 
     mcc_code_list=[]
     with open(merchant_mcc_codes, 'r') as read_obj:
-        csv_reader = reader(read_obj)
+        csv_reader = reader(read_obj,delimiter="|")
         header = next(csv_reader)
 
         for row in csv_reader:
