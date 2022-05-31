@@ -42,7 +42,7 @@ bq load \
 --skip_leading_rows=1 \
 --allow_quoted_newlines \
 --allow_jagged_rows \
-${cc_ref_bq_dataset}.card_read_type gs://${credit_card_bucket}/ref_data/card_read_type.csv
+${cc_ref_bq_dataset}.card_read_type gs://${credit_card_bucket}/ref_data/card_read_type/card_read_type.csv
 
 bq load \
 --project_id=${credit_card_project} \
@@ -53,7 +53,7 @@ bq load \
 --skip_leading_rows=1 \
 --allow_quoted_newlines \
 --allow_jagged_rows \
-${cc_ref_bq_dataset}.card_type_facts gs://${credit_card_bucket}/ref_data/card_type_facts.csv
+${cc_ref_bq_dataset}.card_type_facts gs://${credit_card_bucket}/ref_data/card_type_facts/card_type_facts.csv
 
 bq load \
 --project_id=${credit_card_project} \
@@ -64,7 +64,7 @@ bq load \
 --skip_leading_rows=1 \
 --allow_quoted_newlines \
 --allow_jagged_rows \
-${cc_ref_bq_dataset}.currency gs://${credit_card_bucket}/ref_data/currency.csv
+${cc_ref_bq_dataset}.currency gs://${credit_card_bucket}/ref_data/currency/currency.csv
 
 bq load \
 --project_id=${credit_card_project} \
@@ -75,7 +75,7 @@ bq load \
 --skip_leading_rows=1 \
 --allow_quoted_newlines \
 --allow_jagged_rows \
-${cc_ref_bq_dataset}.events_type gs://${credit_card_bucket}/ref_data/events_type.csv
+${cc_ref_bq_dataset}.events_type gs://${credit_card_bucket}/ref_data/events_type/events_type.csv
 
 bq load \
 --project_id=${credit_card_project} \
@@ -86,7 +86,7 @@ bq load \
 --skip_leading_rows=1 \
 --allow_quoted_newlines \
 --allow_jagged_rows \
-${cc_ref_bq_dataset}.origination_code gs://${credit_card_bucket}/ref_data/origination_code.csv
+${cc_ref_bq_dataset}.origination_code gs://${credit_card_bucket}/ref_data/origination_code/origination_code.csv
 
 bq load \
 --project_id=${credit_card_project} \
@@ -97,7 +97,7 @@ bq load \
 --skip_leading_rows=1 \
 --allow_quoted_newlines \
 --allow_jagged_rows \
-${cc_ref_bq_dataset}.payment_methods gs://${credit_card_bucket}/ref_data/payment_methods.csv
+${cc_ref_bq_dataset}.payment_methods gs://${credit_card_bucket}/ref_data/payment_methods/payment_methods.csv
 
 bq load \
 --project_id=${credit_card_project} \
@@ -108,7 +108,7 @@ bq load \
 --skip_leading_rows=1 \
 --allow_quoted_newlines \
 --allow_jagged_rows \
-${cc_ref_bq_dataset}.signature gs://${credit_card_bucket}/ref_data/signature.csv
+${cc_ref_bq_dataset}.signature gs://${credit_card_bucket}/ref_data/signature/signature.csv
 
 bq load \
 --project_id=${credit_card_project} \
@@ -119,7 +119,7 @@ bq load \
 --skip_leading_rows=1 \
 --allow_quoted_newlines \
 --allow_jagged_rows \
-${cc_ref_bq_dataset}.swiped_code gs://${credit_card_bucket}/ref_data/swiped_code.csv
+${cc_ref_bq_dataset}.swiped_code gs://${credit_card_bucket}/ref_data/swiped_code/swiped_code.csv
 
 bq load \
 --project_id=${credit_card_project} \
@@ -130,7 +130,7 @@ bq load \
 --skip_leading_rows=1 \
 --allow_quoted_newlines \
 --allow_jagged_rows \
-${cc_ref_bq_dataset}.trans_type gs://${credit_card_bucket}/ref_data/trans_type.csv
+${cc_ref_bq_dataset}.trans_type gs://${credit_card_bucket}/ref_data/trans_type/trans_type.csv
 
 fi 
 
