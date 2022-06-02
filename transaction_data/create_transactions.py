@@ -16,7 +16,7 @@ import json
 #from main_config import MainConfig
 from datetime import timezone, datetime, timedelta
 import csv
-from faker_credit_score import CreditScore
+#from faker_credit_score import CreditScore
 import os
 import glob
 from csv import reader
