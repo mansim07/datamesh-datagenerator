@@ -16,7 +16,7 @@ import json
 #from main_config import MainConfig
 from datetime import timezone, datetime, timedelta
 import csv
-#from faker_credit_score import CreditScore
+from faker_credit_score import CreditScore
 import os
 import glob
 from csv import reader
@@ -80,6 +80,8 @@ def validat_parse_input():
             print('Error: invalid bucket name')
         elif n == 9:
             print('Error: invalid GCS file name')
+        elif n == 10:
+            print('Error: invalid write to cloud flag')
 
 
         output = '\nENTER:\n (1) Number of transactions per customer\n '
@@ -91,6 +93,7 @@ def validat_parse_input():
         output += '(7) GCS project name\n'
         output += '(8) GCS bucket_name\n'
         output += '(9) GCS output file name\n'
+        output += '(10) Write to cloud flag [true/false]\n'
 
         print(output)
         sys.exit(1)
@@ -133,12 +136,16 @@ def validat_parse_input():
         transaction_file = sys.argv[9]
     except:
         print_err(9)
+    try:
+        write_to_cloud = sys.argv[10]
+    except:
+        print_err(10)
 
-    return  num_trans_per_customer, seed_num, cc_merchant_file, transactions_output_filename, start_date, end_date,  project_id, bucket_name, transaction_file
+    return  num_trans_per_customer, seed_num, cc_merchant_file, transactions_output_filename, start_date, end_date,  project_id, bucket_name, transaction_file, write_to_cloud.lower()
 
 if __name__ == '__main__':
     #create transaction and transaction history
-    num_trans_per_customer, seed_num, cc_merchant_file, transactions_output_filename, start_date, end_date,  project_id, bucket_name, transaction_file= validat_parse_input()
+    num_trans_per_customer, seed_num, cc_merchant_file, transactions_output_filename, start_date, end_date,  project_id, bucket_name, transaction_file, write_to_cloud = validat_parse_input()
 
     print("Generating Transaction Data")
     fake = Faker()
@@ -212,7 +219,10 @@ if __name__ == '__main__':
 
                         #if count == num_trans_per_customer: 
                         #   break
-    print("Uploading Transaction Data to GCS")
-    transaction_blob.upload_from_filename(transactions_output_filename)
+    if (write_to_cloud == "true"):                     
+        print("Uploading Transaction Data to GCS\n")
+        print("Writing from file: " + transactions_output_filename)
+        print("Writing to gcs: " + bucket_name + "/" + transaction_file)
+        transaction_blob.upload_from_filename(transactions_output_filename)
 
 

@@ -2,18 +2,18 @@ source inputs.sh
 
 mkdir -p ${local_data_dir}
 
-echo "python3 ./customer_data/create_customers_cc_merchant.py ${num_of_customers} ${customer_seed} ${profile_name} ${local_data_dir}/${customer_file} ${local_data_dir}/${cc_customer_file} ${local_data_dir}/${cc_merchant_file} ${customer_project} ${customer_bucket} ${customer_gcs_file} ${cc_customer_map_gcs_file}"
+echo "python3 ./customer_data/create_customers_cc_merchant.py ${num_of_customers} ${customer_seed} ${profile_name} ${local_data_dir}/${customer_file} ${local_data_dir}/${cc_customer_file} ${local_data_dir}/${cc_merchant_file} ${customer_project} ${customer_bucket} ${customer_gcs_file} ${cc_customer_map_gcs_file} ${write_customers_to_cloud}"
 
-python3 ./customer_data/create_customers_cc_merchant.py ${num_of_customers} ${customer_seed} ${profile_name} ${local_data_dir}/${customer_file} ${local_data_dir}/${cc_customer_file} ${local_data_dir}/${cc_merchant_file} ${customer_project} ${customer_bucket} ${customer_gcs_file} ${cc_customer_map_gcs_file}
+python3 ./customer_data/create_customers_cc_merchant.py ${num_of_customers} ${customer_seed} ${profile_name} ${local_data_dir}/${customer_file} ${local_data_dir}/${cc_customer_file} ${local_data_dir}/${cc_merchant_file} ${customer_project} ${customer_bucket} ${customer_gcs_file} ${cc_customer_map_gcs_file} ${write_customers_to_cloud}
 
 res=$?
 
-if [ $res -eq 0 ];
+if [ $res -eq 0 ] && ${write_customers_to_cloud} == "true";
 then
 #bq rm -t -f --project_id=${customer_project} ${customer_bq_table}
 #bq rm -t -f --project_id=${customer_project} ${cc_customer_map_bq_table}
 
-
+set -x 
 echo "gs://${customer_bucket}/${customer_hive_parent}"
 echo "gs://${customer_bucket}/${customer_gcs_file}"
 

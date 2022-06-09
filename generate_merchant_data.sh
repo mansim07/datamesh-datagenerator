@@ -2,11 +2,11 @@ source inputs.sh
 
 mkdir -p ${local_data_dir}
 
-python3 ./merchant_data/create_merchants.py ${num_merchants} ${merchant_seed} ${local_data_dir}/${merchant_filename} ${ref_data_local_path}/${mcc_file_name} ${local_data_dir}/${cc_merchant_file} ${merchant_project} ${merchant_bucket} ${merchant_gcs_filename} ${mcc_gcs_filename}
+python3 ./merchant_data/create_merchants.py ${num_merchants} ${merchant_seed} ${local_data_dir}/${merchant_filename} ${ref_data_local_path}/${mcc_file_name} ${local_data_dir}/${cc_merchant_file} ${merchant_project} ${merchant_bucket} ${merchant_gcs_filename} ${mcc_gcs_filename} ${write_merchants_to_cloud}
 
 res=$?
 
-if [ $res -eq 0 ];
+if [ $res -eq 0 ] && ${write_merchants_to_cloud} == "true";
 then
 #bq rm -t -f --project_id=${merchant_project} merchants_source_data.core_merchants
 #bq rm -t -f --project_id=${merchant_project} merchants_reference_data.mcc_code

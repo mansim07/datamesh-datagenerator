@@ -154,7 +154,9 @@ def input_parse_and_validate():
         elif n == 7:
             print('Error: Missing or invalid GCP project')
         elif n == 8:
-            print('Error: Missing if invalid GCP bucket')
+            print('Error: Missing or invalid GCP bucket')
+        elif n == 9:
+            print('Error: Missing or invalid WriteToGCS Flag')
 
         output = '\nENTER:\n (1) Number of customers\n '
         output += '(2) Random seed (int). Use the same seed value for deterministic values\n '
@@ -164,7 +166,8 @@ def input_parse_and_validate():
         output += '(6) Specify output file name for partial merchant data. Will be used in the next step to generate merchant data \n'
         output += '(7) Specify a GCS project name for uploading the generated customer and cc_mapping file to\n'
         output += '(8) Specify a GCS bucket name for uploading the generated customer and cc_mapping file to\n'
-        output += '(8) Specify a GCS bucket name date partition\n'
+        output += '(9) Specify a GCS bucket name date partition\n'
+        output += '(10) Specify whether or not to write data to GCS (true/false)\n'
 
         print(output)
         sys.exit(1)
@@ -205,18 +208,22 @@ def input_parse_and_validate():
     try:
         customer_gcs_path = sys.argv[9]
     except:
-        print_err(9)
+        print_err(8)
     try:
         cc_customer_gcs_path = sys.argv[10]
     except:
+        print_err(8)
+    try:
+        write_to_cloud = sys.argv[11]
+    except:
         print_err(9)
 
-    return num_cust, seed_num, main, customer_filename, cc_customer_filename, cc_merchant_filename, project_id, bucket_name, customer_gcs_path, cc_customer_gcs_path
+    return num_cust, seed_num, main, customer_filename, cc_customer_filename, cc_merchant_filename, project_id, bucket_name, customer_gcs_path, cc_customer_gcs_path, write_to_cloud.lower()
 
 
 if __name__ == '__main__':
     # read and validate stdin
-    num_cust, seed_num, main, customer_filename, cc_customer_filename, cc_merchant_filename, project_id, bucket_name,customer_gcs_path, cc_customer_gcs_path = input_parse_and_validate()
+    num_cust, seed_num, main, customer_filename, cc_customer_filename, cc_merchant_filename, project_id, bucket_name,customer_gcs_path, cc_customer_gcs_path, write_to_cloud = input_parse_and_validate()
     
     print("Generating customer, cc customer mapping and cc merchant map data")
     # from demographics module
@@ -334,9 +341,16 @@ if __name__ == '__main__':
 
                 }
                 )
-    print("Uploading customer, cc customer mapping to GCS")
-    customer_blob.upload_from_filename(customer_filename)
-    cc_customer_blob.upload_from_filename(cc_customer_filename)
+
+    if (write_to_cloud == "true"): 
+        print("Uploading customer, cc customer mapping to GCS")
+        print("Writing from file: " + customer_filename)
+        print("Writing to gcs: " + bucket_name + "/" + customer_gcs_path)
+        customer_blob.upload_from_filename(customer_filename)
+
+        print("Writing from file: " + cc_customer_filename)
+        print("Writing to gcs: " + bucket_name + "/" + cc_customer_file)
+        cc_customer_blob.upload_from_filename(cc_customer_filename)
 
     #files = glob.glob('./data/*')
     #for f in files:

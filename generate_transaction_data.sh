@@ -2,20 +2,20 @@ source inputs.sh
 
 mkdir -p ${local_data_dir}
 
-echo "python3 ./transaction_data/create_transactions.py ${num_of_trans_per_cust} ${cc_trans_seed} ${local_data_dir}/${cc_merchant_file} ${local_data_dir}/${trans_filename} ${start_date} ${end_date} ${credit_card_project} ${credit_card_bucket} ${cc_auth_gcs_path}"
+echo "python3 ./transaction_data/create_transactions.py ${num_of_trans_per_cust} ${cc_trans_seed} ${local_data_dir}/${cc_merchant_file} ${local_data_dir}/${trans_filename} ${start_date} ${end_date} ${credit_card_project} ${credit_card_bucket} ${cc_auth_gcs_path} ${write_transactions_to_cloud}"
 
-python3 ./transaction_data/create_transactions.py ${num_of_trans_per_cust} ${cc_trans_seed} ${local_data_dir}/${cc_merchant_file} ${local_data_dir}/${trans_filename} ${start_date} ${end_date} ${credit_card_project} ${credit_card_bucket} ${cc_auth_gcs_path}
+python3 ./transaction_data/create_transactions.py ${num_of_trans_per_cust} ${cc_trans_seed} ${local_data_dir}/${cc_merchant_file} ${local_data_dir}/${trans_filename} ${start_date} ${end_date} ${credit_card_project} ${credit_card_bucket} ${cc_auth_gcs_path} ${write_transactions_to_cloud}
 
 res=$?
 
-if [ $res -eq 0 ];
+if [ $res -eq 0 ] && ${write_transactions_to_cloud} == "true";
 then
 
 python3 ./transaction_data/upload_ref_data.py ${credit_card_project} ${credit_card_bucket} ${trans_ref_data}
 
 res1=$?
 
-if [ $res1 -eq 0 ];
+if [ $res1 -eq 0 ] && ${write_transactions_to_cloud} == "true";
 then
 
 bq load \
