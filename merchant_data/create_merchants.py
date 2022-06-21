@@ -67,17 +67,20 @@ class Merchant:
 def validat_parse_input():
     def print_err(n):
         if n == 1:
-            print('Error: invalid number of customers')
+            print('Error: invalid number of merchants')
         elif n == 2:
             print('Error: invalid (non-integer) random seed')
-        elif n == 3:
-            print('Error: main.config could not be opened')
 
         output = '\nENTER:\n (1) Number of customers\n '
         output += '(2) Random seed (int)\n '
-        output += '(3) main_config.json\n'
-        output += '(4) GCP project_name\n'
-        output += '(5) GCS bucket_name'
+        output += '(3) Merchant Output Filename\n'
+        output += '(4) Merchant MCC codes\n'
+        output += '(5) CC Merchant Output Filename\n'
+        output += '(6) GCP project_name\n'
+        output += '(7) GCS bucket_name\n'
+        output += '(8) Merchant GCS Filename\n'
+        output += '(9) MCC GCS Filename\n'
+        output += '(10) Specify whether or not to write data to GCS (true/false)\n'
 
         print(output)
         sys.exit(1)
@@ -104,32 +107,38 @@ def validat_parse_input():
         cc_merchant_filename = sys.argv[5]
         #merchant_mcc_codes= open(m1, 'r').read()
     except:
-        print_err(4)
+        print_err(5)
     try:
         project_id = sys.argv[6]
     except:
-        print_err(5)
+        print_err(6)
 
     try:
         bucket_name = sys.argv[7]
     except:
-        print_err(5)
+        print_err(7)
     try:
        merchant_gcs_filename = sys.argv[8]
     except:
-        print_err(5)
+        print_err(8)
 
     try:
         mcc_gcs_filename = sys.argv[9]
     except:
-        print_err(5)
+        print_err(9)
 
-    return num_merchants, seed_num, merchant_output_filename, merchant_mcc_codes, cc_merchant_filename,  project_id, bucket_name, mcc_gcs_filename, merchant_gcs_filename
+    try:
+       write_to_cloud = sys.argv[10]
+    except:
+        print_err(9)
+
+
+    return num_merchants, seed_num, merchant_output_filename, merchant_mcc_codes, cc_merchant_filename,  project_id, bucket_name, mcc_gcs_filename, merchant_gcs_filename, write_to_cloud
 
 if __name__ == '__main__':
 
 
-    num_merchants, seed_num, merchant_output_filename, merchant_mcc_codes, cc_merchant_filename, project_id, bucket_name, mcc_gcs_filename, merchant_gcs_filename = validat_parse_input()
+    num_merchants, seed_num, merchant_output_filename, merchant_mcc_codes, cc_merchant_filename, project_id, bucket_name, mcc_gcs_filename, merchant_gcs_filename, write_to_cloud = validat_parse_input()
 
     #merchant_source_filename=sys.argv[1]    #"./data/merchant.csv"
     #merchant_mcc_codes=sys.argv[2]
@@ -142,11 +151,8 @@ if __name__ == '__main__':
     ts = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
 
     client = storage.Client(project=project_id)
-    bucket = client.get_bucket(bucket_name)
     merchants_file = merchant_gcs_filename#"merchants_data/date=" + today_date + "/merchants_" + str(ts) + ".csv"
     mcc_file= mcc_gcs_filename#"mcc_codes/date=" + today_date + "/mcc_codes_" + str(ts) + ".csv"
-    merchant_blob = bucket.blob(merchants_file)
-    mcc_blob = bucket.blob(mcc_file)
     merchants_source_filename="./data/merchant.csv"
     mcc_source_filename="./data/mcc_codes.csv"
 
@@ -203,6 +209,11 @@ if __name__ == '__main__':
                     }
                     )
 
-    print("Up-loading merchant and mcc  data")
-    merchant_blob.upload_from_filename(merchant_output_filename)
-    mcc_blob.upload_from_filename(merchant_mcc_codes)
+    if (write_to_cloud == "true"): 
+        bucket = client.get_bucket(bucket_name)
+        merchant_blob = bucket.blob(merchants_file)
+        mcc_blob = bucket.blob(mcc_file)
+
+        print("Up-loading merchant and mcc  data")
+        merchant_blob.upload_from_filename(merchant_output_filename)
+        mcc_blob.upload_from_filename(merchant_mcc_codes)

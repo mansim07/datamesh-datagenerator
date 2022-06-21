@@ -239,12 +239,10 @@ if __name__ == '__main__':
     ts = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
 
     client = storage.Client(project=project_id)
-    bucket = client.get_bucket(bucket_name)
+ 
     customer_file = customer_gcs_path #"customers_data/date=" + today_date + "/customer_" + str(ts) + ".csv"
     cc_customer_file= cc_customer_gcs_path #"cc_customers_data/date=" + today_date + "/cc_customer_" + str(ts) + ".csv"
-    customer_blob = bucket.blob(customer_file)
-    cc_customer_blob = bucket.blob(cc_customer_file)
-
+ 
 
     with open(customer_filename, 'w', newline='') as customerfile, open(cc_customer_filename, 'w', newline='') as cc_custfile, open(cc_merchant_filename, 'w', newline='') as merchfile:
         customer_fieldnames = ['client_id', 'ssn', 'first_name', 'last_name', 'gender', 'street', 'city',
@@ -343,6 +341,10 @@ if __name__ == '__main__':
                 )
 
     if (write_to_cloud == "true"): 
+        bucket = client.get_bucket(bucket_name)
+        customer_blob = bucket.blob(customer_file)
+        cc_customer_blob = bucket.blob(cc_customer_file)
+
         print("Uploading customer, cc customer mapping to GCS")
         print("Writing from file: " + customer_filename)
         print("Writing to gcs: " + bucket_name + "/" + customer_gcs_path)

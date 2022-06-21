@@ -156,10 +156,7 @@ if __name__ == '__main__':
     ts = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
 
     client = storage.Client(project=project_id)
-    bucket = client.get_bucket(bucket_name)
-
-    transaction_blob = bucket.blob(transaction_file)
-  
+   
     ''' 
     terminal_list=[]
     with open(merchant_file_name, 'r') as read_obj:
@@ -219,7 +216,10 @@ if __name__ == '__main__':
 
                         #if count == num_trans_per_customer: 
                         #   break
-    if (write_to_cloud == "true"):                     
+    if (write_to_cloud == "true"):  
+        bucket = client.get_bucket(bucket_name)
+        transaction_blob = bucket.blob(transaction_file)
+                   
         print("Uploading Transaction Data to GCS\n")
         print("Writing from file: " + transactions_output_filename)
         print("Writing to gcs: " + bucket_name + "/" + transaction_file)

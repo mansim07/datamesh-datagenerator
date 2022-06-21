@@ -22,6 +22,6 @@ sed -i '' -e "s/\(customer_bucket=\).*/\1\"${customers_bucket_val}\"/" inputs.sh
 sed -i '' -e "s/\(merchant_bucket=\).*/\1\"${merchants_bucket_val}\"/" inputs.sh
 sed -i '' -e "s/\(credit_card_bucket=\).*/\1\"${transactions_bucket_val}\"/" inputs.sh
 
-./datamesh-datagenerator/generate_customer_data.sh
-./datamesh-datagenerator/generate_merchant_data.sh
-./datamesh-datagenerator/generate_transaction_data.sh
+./generate_customer_data.sh
+./generate_merchant_data.sh
+./generate_transaction_data.sh
