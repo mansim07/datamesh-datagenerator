@@ -16,7 +16,7 @@ mkdir -p ${data_dir_val}
 
 sed -i '' -e "s/\(write_.*_to_cloud=\).*/\1\"false\"/" inputs.sh
 sed -i '' -e "s/\(date_partition=\).*/\1\"${part_val}\"/" inputs.sh
-sed -i '' -e "s/\(local_data_dir=\).*/\1\""${data_dir_val}"\"/" inputs.sh
+sed -i '' -e "s#\(local_data_dir=\).*#\1\""${data_dir_val}"\"#" inputs.sh
 sed -i '' -e "s/\(.*_project=\).*/\1\"${project_val}\"/" inputs.sh
 sed -i '' -e "s/\(customer_bucket=\).*/\1\"${customers_bucket_val}\"/" inputs.sh
 sed -i '' -e "s/\(merchant_bucket=\).*/\1\"${merchants_bucket_val}\"/" inputs.sh
