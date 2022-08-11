@@ -29,6 +29,6 @@ sed ${sedargs} -e "s/\(customer_bucket=\).*/\1\"${customers_bucket_val}\"/" inpu
 sed ${sedargs} -e "s/\(merchant_bucket=\).*/\1\"${merchants_bucket_val}\"/" inputs.sh
 sed ${sedargs} -e "s/\(credit_card_bucket=\).*/\1\"${transactions_bucket_val}\"/" inputs.sh
 
-#./generate_customer_data.sh
-#./generate_merchant_data.sh
-#./generate_transaction_data.sh
+./generate_customer_data.sh
+./generate_merchant_data.sh
+./generate_transaction_data.sh
