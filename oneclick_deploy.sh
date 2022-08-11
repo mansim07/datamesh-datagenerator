@@ -18,7 +18,7 @@ mkdir -p ${data_dir_val}
 sedargs='-i \'\''
 #if running on linux we don't need args for sed
 if test -f "/etc/os-release"; then
-    sedargs = ""
+    sedargs = "-i"
 fi
 
 sed ${sedargs} -e "s/\(write_.*_to_cloud=\).*/\1\"false\"/" inputs.sh

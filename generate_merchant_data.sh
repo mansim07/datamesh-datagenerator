@@ -1,3 +1,4 @@
+#!/bin/bash
 source inputs.sh
 
 mkdir -p ${local_data_dir}
