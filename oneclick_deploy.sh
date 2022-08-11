@@ -15,12 +15,15 @@ transactions_bucket_val=$6
 
 mkdir -p ${data_dir_val}
 
-sedargs='-i \'\''
+sedargs=""
 #if running on linux we don't need args for sed
 if test -f "/etc/os-release"; then
-    sedargs = "-i"
+    sedargs="-i"
+else
+    sedargs="-i tmp"
 fi
 
+set -x
 sed ${sedargs} -e "s/\(write_.*_to_cloud=\).*/\1\"false\"/" inputs.sh
 sed ${sedargs} -e "s/\(date_partition=\).*/\1\"${part_val}\"/" inputs.sh
 sed ${sedargs} -e "s#\(local_data_dir=\).*#\1\""${data_dir_val}"\"#" inputs.sh
